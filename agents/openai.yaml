@@ -1,0 +1,4 @@
+interface:
+  display_name: "MarkItDown"
+  short_description: "Convert documents and files into Markdown"
+  default_prompt: "Use $markitdown to convert this file to Markdown and check the extracted content."
