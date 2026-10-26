@@ -34,7 +34,19 @@ Verified on 2026-10-26 with Python 3.13 and MarkItDown 0.1.9 using the `[docx]` 
 - The source file's SHA-256 hash was unchanged.
 - The skill passed Codex skill-creator validation.
 
-Other formats, OCR, cloud services, and third-party plugins were not tested. Markdown conversion may omit content or lose visual layout. Built-in audio transcription can send audio to Google; cloud extraction and LLM features also require appropriate data-transfer and cost authorization.
+An additional fresh-environment check passed 23 upstream fixtures covering PDF, DOCX, PPTX, XLSX/XLS, Outlook MSG, HTML, CSV, JSON, RSS, notebooks, ZIP, and EPUB. These are sample-based content checks, not a complete format-conformance test.
+
+Testing also found that MarkItDown 0.1.9 can accept a corrupt DOCX through its plain-text fallback. The skill now requires container validation before conversion, and its Python example rejects invalid ZIPs, missing DOCX parts, and bad member CRCs before calling the converter. This protects the documented workflow; it does not change the upstream CLI or library. Container checks do not prove the document's XML or extracted content is correct.
+
+Run the six regression tests against the actual Python example in `SKILL.md` using an environment with `markitdown[docx]` installed:
+
+```sh
+python -m unittest discover -s tests -v
+```
+
+They cover successful conversion, preserving the source and existing output, truncated archives, renamed text, missing document parts, and CRC corruption.
+
+OCR, audio, cloud services, and third-party plugins were not tested. Markdown conversion may omit content or lose visual layout. Built-in audio transcription can send audio to Google; cloud extraction and LLM features also require appropriate data-transfer and cost authorization.
 
 ## Upstream
 
